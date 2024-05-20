@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://hb4j65lb46j1"]
+
+[ext_resource type="Script" path="res://camera.gd" id="1_xyadn"]
+[ext_resource type="Script" path="res://Path.gd" id="2_j8ejm"]
+[ext_resource type="Script" path="res://Road.gd" id="2_vayna"]
+[ext_resource type="PackedScene" uid="uid://bwr6bupyrj44v" path="res://Car.tscn" id="4_v8qgb"]
+
+[sub_resource type="Curve3D" id="Curve3D_q1srj"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 3, 0, 10, 0, 0, 0, 0, 0, 0, 3, 0, -10),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[sub_resource type="Curve3D" id="Curve3D_00xxp"]
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 5, 0, 10, 0, 0, 0, 0, 0, 0, 5, 0, -10),
+"tilts": PackedFloat32Array(0, 0)
+}
+point_count = 2
+
+[node name="Node3D" type="Node3D"]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -0.566593, 0.823998, 0, -0.823998, -0.566593, 0, 5, -2.72119)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="DirectionalLight3D"]
+transform = Transform3D(0.995221, -0.0599864, -0.0770559, -0.0553292, 0.303817, -0.951122, 0.0804653, 0.95084, 0.299046, -1.66344, -4.28478, -4.27063)
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 30.0966, 0)
+script = ExtResource("1_xyadn")
+
+[node name="Road" type="Node3D" parent="."]
+script = ExtResource("2_vayna")
+
+[node name="Left" type="Path3D" parent="Road"]
+curve = SubResource("Curve3D_q1srj")
+script = ExtResource("2_j8ejm")
+
+[node name="Swapping" parent="Road/Left" instance=ExtResource("4_v8qgb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 4)
+progress = 6.0
+base_speed = 0.02
+
+[node name="Obstacle" parent="Road/Left" instance=ExtResource("4_v8qgb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0, 2.50004)
+progress = 7.5
+base_speed = 0.0
+
+[node name="Right" type="Path3D" parent="Road"]
+curve = SubResource("Curve3D_00xxp")
+script = ExtResource("2_j8ejm")
+
+[node name="Coming" parent="Road/Right" instance=ExtResource("4_v8qgb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 10)
+base_speed = 0.04
+patience = 5.0
